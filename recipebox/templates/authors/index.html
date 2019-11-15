@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if authors %}
+        {% for author in authors %}
+            <div>
+                <h4>{{ author.name }}</h4>
+                <p>{{ author.bio }}</p>
+            </div>
+        {% endfor %}
+    
+    {% else %}
+        <p>Come back soon to check out our awesome authors!!</p>
+    {% endif %}
+{% endblock %}

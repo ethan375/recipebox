@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <h4>{{ recipe.title }}</h4>
+        <a href="/recipes/author/{{recipe.author.id}}">Author: {{ recipe.author }}</a>
+        <p>{{ recipe.time_required }}</p>
+        <p>{{ recipe.description }}</p>
+        <p>{{ recipe.instructions }}</p>
+    </div>
+
+{% endblock %}
