@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Author, Recipe
 
 
@@ -15,8 +15,15 @@ def recipe(request, id):
     return render(request, 'recipes/recipe_detail.html', context)
 
 
-def authors(request):
-    authors = Author.objects.all()
-    context = {'authors': authors}
-    return render(request, 'authors/index.html', context)
+def authors(request, id):
+    author = Author.objects.get(id=id)
+    recipes = Recipe.objects.filter(author=id)
+    context = {
+        'author': author,
+        'recipes': recipes
+        }
+    return render(request, 'authors/author_detail.html', context)
 
+
+def home(request):
+    return redirect('/recipes')
