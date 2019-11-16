@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+    <h3 style="margin-bottom: 80px;">Want to create and publish a recipe? <a href="/recipe/new">Publish recipe</a></h3>
+
     <div>
         <h4>{{ recipe.title }}</h4>
         <a href="/author/{{recipe.author.id}}">Author: {{ recipe.author }}</a>
