@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="/logout">Logout</a>
+    <h3 style="margin-bottom: 80px;">Want to create and publish a recipe? <a href="/recipe/new">Publish recipe</a></h3>
     {% if recipes %}
         {% for recipe in recipes %}
             <div>
