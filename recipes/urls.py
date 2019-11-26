@@ -9,5 +9,6 @@ urlpatterns = [
     path('recipe/<int:id>', views.recipe, name='recipe_detail'),
     path('author/<int:id>', views.authors, name='author_detail'),
     path('recipe/new', views.new_recipe, name='new_recipe'),
-    path('author/new', views.new_author, name="new_author")
+    path('author/new', views.new_author, name="new_author"),
+    path('edit/<int:id>/', views.editrecipeview, name='edit')
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, reverse
 from .models import Author, Recipe
 from recipebox.templates.forms.form import NewAuthor, NewRecipe
 
@@ -75,3 +75,25 @@ def new_author(request):
         context = {'form': form}
 
     return render(request, 'authors/new_author.html', context)
+
+
+# handling the edit tickets
+def editrecipeview(request, id):
+    html = "generic_form.html"
+
+    instance = Recipe.objects.get(id=id)
+
+    if request.method == "POST":
+        form = NewRecipe(request.POST, instance=instance)
+        form.save()
+
+        return HttpResponseRedirect('/recipes')
+    form = NewRecipe(instance=instance)
+
+    return render(request, html, {'form': form})
+
+
+# handling the add favorite
+
+def addfavorite(request, author):
+    
