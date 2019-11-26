@@ -12,26 +12,28 @@ def home(request):
 
 
 # Handling the recipe(s) views
-@login_required(login_url='/login', redirect_field_name='')
+@login_required
 def recipes(request):
     recipes = Recipe.objects.all()
     context = {'recipes': recipes}
     return render(request, 'recipes/index.html', context)
 
 
-@login_required(login_url='/login', redirect_field_name='')
+@login_required
 def recipe(request, id):
     recipe = Recipe.objects.get(id=id)
-    context = {'recipe': recipe}
-    print(recipe)
-    return render(request, 'recipes/recipe_detail.html', context)
+    user = request.user
+    print(user)
+    print(recipe.author)
+    return render(request, 'recipes/recipe_detail.html', {'recipe': recipe, 'user': user})
 
 
 # handling the author(s) views
-@login_required(login_url='/login', redirect_field_name='')
+@login_required
 def authors(request, id):
     author = Author.objects.get(id=id)
     recipes = Recipe.objects.filter(author=id)
+    
     context = {
         'author': author,
         'recipes': recipes
@@ -40,7 +42,7 @@ def authors(request, id):
 
 
 # handling new data forms
-@login_required(login_url='/login', redirect_field_name='')
+@login_required
 def new_recipe(request):
     if request.method == 'POST':
         form = NewRecipe(request.POST)
@@ -49,11 +51,11 @@ def new_recipe(request):
             data = form .cleaned_data
 
             Recipe.objects.create(
-                title = data['title'],
-                author = request.user.author,
-                description = data['description'],
-                time_required = data['time_required'],
-                instructions = data['instructions']
+                title=data['title'],
+                author=data['author'],
+                description=data['description'],
+                time_required=data['time_required'],
+                instructions=data['instructions']
             )
             return render(request, 'recipes/index.html')
 
@@ -72,15 +74,15 @@ def new_author(request):
             if form.is_valid():
                 data = form .cleaned_data
 
-                user = User.objects.create(
+                user = User.objects.create_user(
                     username=data['name'],
                     password=data['password']
                 )
 
                 Author.objects.create(
-                    name = data['name'],
-                    bio = data['bio'],
-                    user = user
+                    name=data['name'],
+                    bio=data['bio'],
+                    user=user
                 )
                 return render(request, 'auth/register_success.html')
 
@@ -102,11 +104,11 @@ def login_user(request):
 
             user = authenticate(
                 request,
-                username=data['username'], 
+                username=data['username'],
                 password=data['password']
             )
 
-            if user is not None:
+            if user:
                 login(request, user)
                 return redirect('/recipes')
             else:
@@ -124,3 +126,37 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+
+# handling the edit tickets
+def editrecipeview(request, id):
+    html = "generic_form.html"
+
+    instance = Recipe.objects.get(id=id)
+
+    if request.method == "POST":
+        form = NewRecipe(request.POST, instance=instance)
+        form.save()
+
+        return HttpResponseRedirect('/recipes')
+    form = NewRecipe(instance=instance)
+
+    return render(request, html, {'form': form})
+
+
+# handling favoriting
+def favorite(request, id):
+    current_user = request.user.author
+    target_favorite = Recipe.objects.get(id=id)
+
+    current_user.favorites.add(target_favorite)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def unfavorite(request, id):
+    current_user = request.user.author
+    target_favorite = Recipe.objects.get(id=id)
+
+    current_user.favorites.remove(target_favorite)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+

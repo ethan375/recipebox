@@ -3,7 +3,11 @@
 {% block content %}
 
     <h3 style="margin-bottom: 80px;">Want to create and publish a recipe? <a href="/recipe/new">Publish recipe</a></h3>
-    <h3 style="margin-bottom: 80px;">Want to edit this recipe? <a href="/edit/{{recipe.id}}">Edit recipe</a></h3>
+    {% if recipe.author.user == user or user.is_staff %}
+        <h3 style="margin-bottom: 80px;">Want to edit this recipe? <a href="/edit/{{recipe.id}}">Edit recipe</a></h3>
+    {% endif %}
+
+    
 
     <div>
         <h4>{{ recipe.title }}</h4>
@@ -12,5 +16,12 @@
         <p>{{ recipe.description }}</p>
         <p>{{ recipe.instructions }}</p>
     </div>
+    {% if user.is_authenticated %}
+        <h4>This recipe is gross and I don't like it anymore. <a href="/unfavorite/{{recipe.id}}">REMOVE</a></h4>
+        
+    
+        <h4>Add this recipe to your favorites! <a href="/favorite/{{recipe.id}}">ADD</a></h4>
+    {% endif %}
+
 
 {% endblock %}

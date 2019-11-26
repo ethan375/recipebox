@@ -4,10 +4,11 @@
 
     <h3 style="margin-bottom: 80px;">Want to become an author on this awesome app? <a href="/author/new">Become new author</a></h3>
 
-    <h4>{{ author.name }}</h4>
+    <h1>{{ author.name }}</h1>
     <p>{{ author.bio }}</p>
 
     {% if recipes %}
+        <h3>Recipes Authored:</h3>
         {% for recipe in recipes %}
             <div>
                 <a href="/recipe/{{recipe.id}}">{{recipe.title}}</a>
@@ -18,4 +19,12 @@
                 <p>Check back soon for recipes!</p>
             </div>
     {% endif %}
+            <h3>Favorite Recipes:</h3>
+            {% for favs in author.favorites.all %}
+                <div>
+                    <p><a href="/recipe/{{favs.id}}/">{{ favs.title }}</a></p>
+                </div>
+            {% empty %}
+                <p>No favorites yet!</p>
+            {% endfor %}
 {% endblock %}
