@@ -1,6 +1,5 @@
 from django import forms
 from recipes.models import Author, Recipe
-# from recipes.models import Author
 
 
 class NewAuthor(forms.Form):
@@ -19,8 +18,6 @@ class NewRecipe(forms.ModelForm):
             'time_required',
             'instructions'
         ]
-
-
 
 
 class Login(forms.Form):

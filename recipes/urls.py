@@ -16,7 +16,7 @@ urlpatterns = [
     path('author/new', views.new_author, name="new_author"),
 
     path('author/<int:id>', views.authors, name='author_detail'),
-    path('edit/<int:id>/', views.editrecipeview, name='edit')
+    # path('edit/<int:id>/', views.editrecipeview, name='edit'),
 
     path('register', views.new_author, name='new_author'),
 

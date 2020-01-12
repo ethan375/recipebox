@@ -49,13 +49,13 @@ def new_recipe(request):
             data = form .cleaned_data
 
             Recipe.objects.create(
-                title = data['title'],
-                author = request.user.author,
-                description = data['description'],
-                time_required = data['time_required'],
-                instructions = data['instructions']
+                title=data['title'],
+                author=request.user.author,
+                description=data['description'],
+                time_required=data['time_required'],
+                instructions=data['instructions']
             )
-            return render(request, 'recipes/index.html')
+            return render(request, 'recipes/index.html', request.user)
 
     else:
         form = NewRecipe()
@@ -78,9 +78,9 @@ def new_author(request):
                 )
 
                 Author.objects.create(
-                    name = data['name'],
-                    bio = data['bio'],
-                    user = user
+                    name=data['name'],
+                    bio=data['bio'],
+                    user=user
                 )
                 return render(request, 'auth/register_success.html')
 
